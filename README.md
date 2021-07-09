@@ -1,7 +1,9 @@
-# ERSAP
+# ERSAP C++ Binding
 
-A reactive micro-services framework to provide a computing environment for efficient
-data-stream processing.
+An Environment for Realtime Streaming Acquisition and Processing, 
+designed to process unbounded streams of continuous data at scale 
+over distributed heterogeneous resources.
+
 
 ![Build Status](https://github.com/JeffersonLab/ersap-cpp/workflows/Ersap%20CI/badge.svg)
 [![Javadoc](https://img.shields.io/badge/doxygen-master-blue.svg?style=flat)](https://ersapweb.jlab.org/ersap/api/cpp/)
