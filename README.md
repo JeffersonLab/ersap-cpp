@@ -1,8 +1,7 @@
 # ERSAP C++ Binding
 
-An Environment for Realtime Streaming Acquisition and Processing, 
-designed to process unbounded streams of continuous data at scale 
-over distributed heterogeneous resources.
+An ***E***nvironment for ***R***ealtime ***S***treaming ***A***cquisition and ***P***rocessing,
+designed to process unbounded streams of continuous data at scale over distributed heterogeneous resources.
 
 
 ![Build Status](https://github.com/JeffersonLab/ersap-cpp/workflows/Ersap%20CI/badge.svg)
