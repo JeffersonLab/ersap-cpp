@@ -1,7 +1,7 @@
 # ERSAP
 
-A service-oriented framework to provide a computing environment for efficient
-Big Data processing.
+A reactive micro-services framework to provide a computing environment for efficient
+data-stream processing.
 
 ![Build Status](https://github.com/JeffersonLab/ersap-cpp/workflows/Ersap%20CI/badge.svg)
 [![Javadoc](https://img.shields.io/badge/doxygen-master-blue.svg?style=flat)](https://ersapweb.jlab.org/ersap/api/cpp/)
