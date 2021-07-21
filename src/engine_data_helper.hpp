@@ -92,7 +92,6 @@ public:
         auto* metadata = msg.meta();
         auto& mime_type = metadata->datatype();
         for (auto&& dt : data_types) {
-std::cout << dt.mime_type() << " - " << mime_type << "\n"; //vg 07.11
             if (dt.mime_type() == mime_type) {
                 try {
                     auto user_data = dt.serializer()->read(msg.data());
