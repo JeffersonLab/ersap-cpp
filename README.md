@@ -7,10 +7,17 @@ designed to process unbounded streams of continuous data at scale over distribut
 ![Build Status](https://github.com/JeffersonLab/ersap-cpp/workflows/Ersap%20CI/badge.svg)
 [![Javadoc](https://img.shields.io/badge/doxygen-master-blue.svg?style=flat)](https://ersapweb.jlab.org/ersap/api/cpp/)
 
-
-## Documentation
-
-The reference documentation is available at <https://ersapweb.jlab.org>.
+ An ***E***nvironment for ***R***ealtime ***S***treaming ***A***cquisition and ***P***rocessing,
+ designed to process unbounded streams of continuous data at scale over distributed heterogeneous resources.
+ 
+### ERSAP is modular
+ERSAP presents a micro-services architecture for data-stream analytics. One can think of ERSAP as a software LEGO system to design and deploy scientific data processing applications without writing a single line of code. It is a data-in-motion platform to build streaming scientific-data analytics applications.
+### ERSAP is resilient
+ERSAP application stays responsive in the face of a failure. Resilience is achieved by service replication, failure containment, isolation and delegation. Failures are contained within each service, isolating services from each other and thereby ensuring that parts of the system can fail and recover without compromising the system as a whole. 
+### ERSAP is elastic
+ERSAP system stays amenable under varying workloads. It reacts to changes in the input data-stream rate by increasing or decreasing the resource allocation to process an input stream. ERSAP orchestrator implements predictive, as well as reactive scaling algorithms by providing relevant live performance measures. We achieve elasticity in a cost-effective way on commodity hardware and software platforms.
+### ERSAP is reactive
+ERSAP uses asynchronous message-passing to establish boundaries between services that ensure loose coupling, isolation, location transparency, and provides means to delegate errors as messages. Employing explicit message-passing enables load balancing and overall data-flow, i.e. application algorithm control and orchestration.
 
 
 ## Build notes
@@ -68,10 +75,5 @@ The main [ERSAP Java](https://github.com/JeffersonLab/ersap-java) implementation
 should also be already installed in `$ERSAP_HOME`
 to run C++ services with the standard orchestrator and the ERSAP shell.
 
-
-## Authors
-
-* Vardan Gyurjyan
-* Sebastián Mancilla
 
 For assistance send email to [ersap@jlab.org](mailto:ersap@jlab.org).
