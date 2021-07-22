@@ -2,13 +2,6 @@
 
 An ***E***nvironment for ***R***ealtime ***S***treaming ***A***cquisition and ***P***rocessing,
 designed to process unbounded streams of continuous data at scale over distributed heterogeneous resources.
-
-
-![Build Status](https://github.com/JeffersonLab/ersap-cpp/workflows/Ersap%20CI/badge.svg)
-[![Javadoc](https://img.shields.io/badge/doxygen-master-blue.svg?style=flat)](https://ersapweb.jlab.org/ersap/api/cpp/)
-
- An ***E***nvironment for ***R***ealtime ***S***treaming ***A***cquisition and ***P***rocessing,
- designed to process unbounded streams of continuous data at scale over distributed heterogeneous resources.
  
 ### ERSAP is modular
 ERSAP presents a micro-services architecture for data-stream analytics. One can think of ERSAP as a software LEGO system to design and deploy scientific data processing applications without writing a single line of code. It is a data-in-motion platform to build streaming scientific-data analytics applications.
