@@ -70,7 +70,6 @@ to run C++ services with the standard orchestrator, and the ERSAP shell.
 
 
 ## Authors
-
 * Vardan Gyurjyan
 * Sebastián Mancilla
 
