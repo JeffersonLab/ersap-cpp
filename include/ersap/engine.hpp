@@ -32,6 +32,7 @@
 #include <vector>
 
 /**
+ *
  * Core ERSAP classes and functions.
  */
 namespace ersap {

@@ -18,6 +18,7 @@
  * This software was developed under the United States Government license.
  * For more information contact author at gurjyan@jlab.org
  * Department of Experimental Nuclear Physics, Jefferson Lab.
+ *
  */
 
 #ifndef ERSAP_ENGINE_DATA_HELPER_HPP

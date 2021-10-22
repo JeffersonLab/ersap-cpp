@@ -34,6 +34,7 @@
 namespace ersap {
 namespace util {
 
+
 xmsg::Message build_request(const xmsg::Topic& topic, const std::string& data);
 
 std::string parse_message(const xmsg::Message& msg);
