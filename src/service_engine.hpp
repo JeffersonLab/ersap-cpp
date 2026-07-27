@@ -9,6 +9,8 @@
 #include "composition.hpp"
 #include "engine_data_helper.hpp"
 
+#include <xmsg/proxy.h>
+
 #include <memory>
 #include <mutex>
 
@@ -59,6 +61,7 @@ private:
 private:
     void send_response(EngineData& output, const xmsg::Topic& topic);
     void send_result(EngineData& output, const std::set<std::string>& links);
+    void send_user_metrics();
 
     void report_problem(EngineData& output);
     void report_result(EngineData& output);
@@ -72,6 +75,9 @@ private:
     ServiceReport* report_;
     ServiceConfig* config_;
     EngineDataAccessor accessor_;
+
+    bool has_monitor_fe_;
+    xmsg::ProxyAddress monitor_fe_addr_;
 
     decltype(engine_->input_data_types()) input_types_;
     decltype(engine_->output_data_types()) output_types_;

@@ -22,17 +22,40 @@
 
 #include "service_engine.hpp"
 
+#include "constants.hpp"
 #include "data_utils.hpp"
 #include "logging.hpp"
 #include "service_config.hpp"
 #include "service_report.hpp"
 
+#include <ersap/engine_metrics_publisher.hpp>
+
 #include <xmsg/util.h>
 
 #include <chrono>
+#include <cstdlib>
 
 
 namespace {
+
+bool parse_monitor_fe(const char* env, xmsg::ProxyAddress& out)
+{
+    std::string s{env};
+    auto pct = s.find('%');
+    if (pct == std::string::npos) return false;
+    auto host = s.substr(0, pct);
+    auto rest = s.substr(pct + 1);
+    auto us = rest.find('_');
+    if (us == std::string::npos) return false;
+    try {
+        int port = std::stoi(rest.substr(0, us));
+        out = xmsg::ProxyAddress{host, port};
+        return true;
+    } catch (...) {
+        return false;
+    }
+}
+
 
 ersap::EngineData build_error_data(const char* msg,
                                    int severity,
@@ -76,8 +99,12 @@ ServiceEngine::ServiceEngine(const Component& self,
   , input_types_{engine_->input_data_types()}
   , output_types_{engine_->output_data_types()}
   , compiler_{self.name()}
+  , has_monitor_fe_{false}
 {
-    // nop
+    const char* mon_env = std::getenv("ERSAP_MONITOR_FE");
+    if (mon_env) {
+        has_monitor_fe_ = parse_monitor_fe(mon_env, monitor_fe_addr_);
+    }
 }
 
 
@@ -131,6 +158,7 @@ void ServiceEngine::execute(xmsg::Message& msg)
 
     auto input_data = get_engine_data(msg);
     parse_composition(input_data);
+    EngineMetricsPublisher::clear();
     auto output_data = execute_engine(input_data);
 
     update_metadata(input_data, output_data);
@@ -147,6 +175,7 @@ void ServiceEngine::execute(xmsg::Message& msg)
     }
     report_result(output_data);
     send_result(output_data, get_links(input_data, output_data));
+    send_user_metrics();
 }
 
 
@@ -303,6 +332,34 @@ void ServiceEngine::report(const std::string& topic_prefix, EngineData& output)
     auto msg = accessor_.serialize(output, topic, output_types_);
     auto con = connect(frontend().addr());
     publish(con, msg);
+}
+
+
+void ServiceEngine::send_user_metrics()
+{
+    if (!has_monitor_fe_) {
+        return;
+    }
+    auto json = EngineMetricsPublisher::drain_as_json();
+    if (json.empty()) {
+        return;
+    }
+    try {
+        auto topic_str = constants::user_metrics
+                         + ":" + report_->session()
+                         + ":" + name();
+        auto topic = xmsg::Topic::raw(topic_str);
+
+        auto data = EngineData{};
+        data.set_data(type::JSON.mime_type(), json);
+        data.set_description(topic_str);
+
+        auto msg = accessor_.serialize(data, topic, {type::JSON});
+        auto con = connect(monitor_fe_addr_);
+        publish(con, msg);
+    } catch (const std::exception& e) {
+        LOGGER->error("Could not send user metrics for %s: %s", name(), e.what());
+    }
 }
 
 } // end namespace ersap

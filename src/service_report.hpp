@@ -37,6 +37,7 @@ struct ServiceParameters
     std::string initial_state;
     std::string description;
     int pool_size;
+    std::string session;
 };
 
 
@@ -67,6 +68,8 @@ public:
     std::string version() const { return version_; };
 
     std::string start_time() const { return start_time_; };
+
+    std::string session() const { return session_; };
 
 public:
     long n_requests() const { return n_requests_.load(); };
@@ -102,6 +105,7 @@ private:
     std::string name_;
     std::string engine_;
     std::string library_;
+    std::string session_;
 
     int pool_size_;
     std::string author_;

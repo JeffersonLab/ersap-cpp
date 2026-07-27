@@ -16,7 +16,9 @@
 #include <xmsg/xmsg.h>
 
 #include <condition_variable>
+#include <cstdlib>
 #include <mutex>
+#include <stdexcept>
 #include <thread>
 
 
@@ -318,7 +320,7 @@ void Dpe::DpeImpl::start_service(util::RequestParser& parser)
     }
 
     ServiceParameters service_params = {
-        engine_name, engine_lib, initial_state, description, pool_size
+        engine_name, engine_lib, initial_state, description, pool_size, config_.session
     };
 
     auto service_name = util::make_name(name(), container_name, engine_name);
@@ -450,16 +452,51 @@ void ReportService::stop()
 }
 
 
+static bool parse_monitor_fe(const char* env, xmsg::ProxyAddress& out)
+{
+    std::string s{env};
+    auto pct = s.find('%');
+    if (pct == std::string::npos) return false;
+    auto host = s.substr(0, pct);
+    auto rest = s.substr(pct + 1);
+    auto us = rest.find('_');
+    if (us == std::string::npos) return false;
+    try {
+        int port = std::stoi(rest.substr(0, us));
+        out = xmsg::ProxyAddress{host, port};
+        return true;
+    } catch (...) {
+        return false;
+    }
+}
+
+
 void ReportService::run()
 {
     try {
         auto fe_addr = base_.frontend().addr();
         auto con = base_.connect(fe_addr);
+
+        bool has_mon = false;
+        xmsg::ProxyAddress mon_addr;
+        const char* mon_env = std::getenv("ERSAP_MONITOR_FE");
+        if (mon_env) {
+            has_mon = parse_monitor_fe(mon_env, mon_addr);
+            if (has_mon) {
+                LOGGER->info("Using monitoring front-end %s", mon_env);
+            }
+        }
+
         while (true) {
             auto alive_msg = alive_message();
             auto json_msg = report_message();
             base_.publish(con, alive_msg);
             base_.publish(con, json_msg);
+            if (has_mon) {
+                auto mon_con = base_.connect(mon_addr);
+                base_.publish(mon_con, alive_msg);
+                base_.publish(mon_con, json_msg);
+            }
             if (!wait(config_.report_period)) {
                 break;
             }

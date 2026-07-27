@@ -9,6 +9,7 @@ set(ERSAP_SRC
   dpe_report.cpp
   engine_data.cpp
   engine_data_type.cpp
+  engine_metrics_publisher.cpp
   json_report.cpp
   service.cpp
   service_engine.cpp

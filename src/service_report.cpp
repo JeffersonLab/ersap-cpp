@@ -34,6 +34,7 @@ ServiceReport::ServiceReport(const std::string& name,
   : name_{name}
   , engine_{params.engine_name}
   , library_{params.engine_lib}
+  , session_{params.session}
   , pool_size_{params.pool_size}
   , author_{author}
   , version_{version}

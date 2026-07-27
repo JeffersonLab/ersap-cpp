@@ -27,6 +27,9 @@ const std::string ping_dpe = "pingDpe";
 const std::string ping_remote_dpe = "pingRemoteDpe";
 const std::string dpe_alive = "dpeAlive";
 const std::string dpe_report = "dpeReport";
+const std::string user_metrics = "userMetrics";
+
+constexpr int monitor_port = 9000;
 
 const std::string container = "container";
 const std::string state_container = "getContainerState";
