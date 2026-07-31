@@ -96,10 +96,10 @@ ServiceEngine::ServiceEngine(const Component& self,
   , engine_{engine}
   , report_{report}
   , config_{config}
+  , has_monitor_fe_{false}
   , input_types_{engine_->input_data_types()}
   , output_types_{engine_->output_data_types()}
   , compiler_{self.name()}
-  , has_monitor_fe_{false}
 {
     const char* mon_env = std::getenv("ERSAP_MONITOR_FE");
     if (mon_env) {
