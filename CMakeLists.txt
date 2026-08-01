@@ -61,11 +61,8 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules)
 
 set(FETCHCONTENT_BASE_DIR "${CMAKE_BINARY_DIR}/ThirdParty" CACHE PATH
   "Directory under which to collect all populated content")
-if(${CMAKE_VERSION} VERSION_LESS 3.11)
-  include(cmake/External/FetchContent.cmake)
-else()
-  include(FetchContent)
-endif()
+
+include(FetchContent)
 
 if(ERSAP_BUILD_TESTS)
   enable_testing()
