@@ -62,6 +62,17 @@ To build with CMake a configure wrapper script is provided:
     $ make
     $ make install
 
+This is a CMake / RHEL convention mismatch — CMake defaults CMAKE_INSTALL_LIBDIR to lib64 on 64-bit RHEL/Fedora systems, but ersap-java's shell wrappers assume lib.
+
+Fix — reinstall with lib explicitly
+
+	$ cd ~/Devel/ersap/ersap-cpp/build
+	$ rm -rf CMakeCache.txt CMakeFiles/	
+	$ cmake -DCMAKE_INSTALL_PREFIX=$ERSAP_HOME -DCMAKE_INSTALL_LIBDIR=lib ..
+	$ make install
+
+
+
 This will install ERSAP C++ into the location of your ERSAP distribution.
 
 The main [ERSAP Java](https://github.com/JeffersonLab/ersap-java) implementation
