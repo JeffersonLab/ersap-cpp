@@ -152,7 +152,7 @@ private:
 };
 
 
-Dpe::Dpe(bool is_frontend,
+Dpe::Dpe(bool /*is_frontend*/,
          const xmsg::ProxyAddress& local,
          const xmsg::ProxyAddress& frontend,
          const DpeConfig& config)

@@ -4,6 +4,7 @@
 #define ERSAP_DATA_SERIALIZATION_H
 
 #include <ersap/any.hpp>
+#include <cstdint>
 
 #include <vector>
 

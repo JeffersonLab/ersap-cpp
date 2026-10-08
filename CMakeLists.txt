@@ -1,4 +1,5 @@
-cmake_minimum_required(VERSION 3.5.1)
+cmake_minimum_required(VERSION 3.16)
+
 project(ERSAP LANGUAGES CXX)
 
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
@@ -60,11 +61,8 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules)
 
 set(FETCHCONTENT_BASE_DIR "${CMAKE_BINARY_DIR}/ThirdParty" CACHE PATH
   "Directory under which to collect all populated content")
-if(${CMAKE_VERSION} VERSION_LESS 3.11)
-  include(cmake/External/FetchContent.cmake)
-else()
-  include(FetchContent)
-endif()
+
+include(FetchContent)
 
 if(ERSAP_BUILD_TESTS)
   enable_testing()

@@ -1,24 +1,19 @@
 FetchContent_Declare(
   googletest
-  URL https://github.com/google/googletest/archive/release-1.8.1.zip
-  URL_HASH SHA256=927827c183d01734cc5cfef85e0ff3f5a92ffe6188e0d18e909c5efebf28a0c7
+  URL https://github.com/google/googletest/archive/refs/tags/v1.17.0.zip
+  URL_HASH SHA256=40d4ec942217dcc84a9ebe2a68584ada7d4a33a8ee958755763278ea1c5e18ff
+  DOWNLOAD_EXTRACT_TIMESTAMP TRUE
 )
 
-FetchContent_GetProperties(googletest)
+set(CMAKE_CXX_CLANG_TIDY "")
+set_directory_properties(PROPERTIES EXCLUDE_FROM_ALL YES)
 
-if(NOT googletest_POPULATED)
-  FetchContent_Populate(googletest)
+option(INSTALL_GTEST "Install googletest." OFF)
+set(BUILD_SHARED_LIBS OFF)
 
-  set(CMAKE_CXX_CLANG_TIDY "")
-  set_directory_properties(PROPERTIES EXCLUDE_FROM_ALL YES)
+FetchContent_MakeAvailable(googletest)
 
-  option(INSTALL_GTEST "Install googletest." OFF)
-  set(BUILD_SHARED_LIBS OFF)
-
-  add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR})
-
-  mark_as_advanced(INSTALL_GTEST BUILD_GMOCK)
-endif()
+mark_as_advanced(INSTALL_GTEST BUILD_GMOCK)
 
 if(NOT TARGET GTest::GTest)
   add_library(GTest::GTest ALIAS gtest)
