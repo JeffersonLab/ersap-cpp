@@ -15,7 +15,7 @@ In progress...
 
 ## Build notes
 
-ERSAP requires a C++14 compiler and CMake 3.5+
+ERSAP requires a C++17 compiler and CMake 3.5+
 
 #### Ubuntu 18.04 and 20.04
 
