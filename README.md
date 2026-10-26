@@ -62,22 +62,44 @@ To build with CMake a configure wrapper script is provided:
     $ make
     $ make install
 
-This is a CMake / RHEL convention mismatch — CMake defaults CMAKE_INSTALL_LIBDIR to lib64 on 64-bit RHEL/Fedora systems, but ersap-java's shell wrappers assume lib.
+This installs ERSAP C++ into the location of your ERSAP distribution.
 
-Fix — reinstall with lib explicitly
+#### Install layout
 
-	$ cd ~/Devel/ersap/ersap-cpp/build
-	$ rm -rf CMakeCache.txt CMakeFiles/	
-	$ cmake -DCMAKE_INSTALL_PREFIX=$ERSAP_HOME -DCMAKE_INSTALL_LIBDIR=lib ..
-	$ make install
+ERSAP honours CMake's `GNUInstallDirs`, so the native binaries follow the
+host's convention:
 
+| Host | `CMAKE_INSTALL_LIBDIR` | Where native binaries land |
+|---|---|---|
+| Debian / Ubuntu, macOS | `lib` | `$ERSAP_HOME/lib/{libersap.so, libxmsg.so, ersap/c_dpe, pkgconfig/, cmake/}` |
+| RHEL / EL / Fedora (64-bit) | `lib64` | `$ERSAP_HOME/lib64/{libersap.so, libxmsg.so, ersap/c_dpe, pkgconfig/, cmake/}` |
 
+Either way, the installed `$ERSAP_HOME/bin/c_dpe` wrapper is templated at
+build time to point at the right libdir, so there's nothing to configure
+on the user side. Pass `-DCMAKE_INSTALL_LIBDIR=lib` by hand only if you
+need to override the default (for example when packing a Docker image where
+you want jars and natives in a single `lib/`):
 
-This will install ERSAP C++ into the location of your ERSAP distribution.
+    $ cmake -S . -B build -DCMAKE_INSTALL_PREFIX="$ERSAP_HOME" -DCMAKE_INSTALL_LIBDIR=lib
+    $ cmake --build build -j && cmake --install build
 
-The main [ERSAP Java](https://github.com/JeffersonLab/ersap-java) implementation
-should also be already installed in `$ERSAP_HOME`
-to run C++ services with the standard orchestrator, and the ERSAP shell.
+#### Runtime library resolution
+
+On Linux the installed `libersap.so` / `libxmsg.so` carry a RUNPATH that
+includes `$ORIGIN` plus every directory CMake saw at link time (protobuf,
+abseil, Boost, ZeroMQ, ...). As long as those libraries were present at
+build time, the installed objects resolve under `ldd` without any
+`LD_LIBRARY_PATH` or `/etc/ld.so.conf.d/*` edits. On macOS the equivalent
+is handled by `@loader_path`.
+
+#### Interoperation with ERSAP Java
+
+The main [ERSAP Java](https://github.com/JeffersonLab/ersap-java)
+implementation should also be installed in `$ERSAP_HOME` to run C++
+services with the standard orchestrator and the ERSAP shell. Its jars and
+`run-java` wrapper always live in `$ERSAP_HOME/lib/` (arch-neutral content),
+so Java and native sides coexist cleanly on both `lib`-style and
+`lib64`-style hosts.
 
 
 ## Authors
