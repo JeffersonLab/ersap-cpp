@@ -1,7 +1,7 @@
 FetchContent_Declare(
   googletest
-  URL https://github.com/google/googletest/archive/release-1.8.1.zip
-  URL_HASH SHA256=927827c183d01734cc5cfef85e0ff3f5a92ffe6188e0d18e909c5efebf28a0c7
+  URL https://github.com/google/googletest/archive/refs/tags/v1.15.2.zip
+  URL_HASH SHA256=f179ec217f9b3b3f3c6e8b02d3e7eda997b49e4ce26d6b235c9053bec9c0bf9f
 )
 
 FetchContent_GetProperties(googletest)

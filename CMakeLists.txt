@@ -1,5 +1,14 @@
-cmake_minimum_required(VERSION 3.5.1)
+cmake_minimum_required(VERSION 3.5.1...3.29)
 project(ERSAP LANGUAGES CXX)
+
+# Extract downloaded archives with the current time as timestamps.
+if(POLICY CMP0135)
+  cmake_policy(SET CMP0135 NEW)
+endif()
+# Keep calling FetchContent_Populate() directly for the third-party deps.
+if(POLICY CMP0169)
+  cmake_policy(SET CMP0169 OLD)
+endif()
 
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
   message(STATUS "No build type selected, default to Release")
