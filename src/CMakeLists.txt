@@ -60,10 +60,16 @@ install(TARGETS c_dpe
   DESTINATION ${CMAKE_INSTALL_LIBDIR}/ersap
   COMPONENT Ersap_Runtime
 )
-install(FILES ${PROJECT_SOURCE_DIR}/scripts/unix/c_dpe
-  PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE
-              GROUP_READ GROUP_EXECUTE
-              WORLD_READ WORLD_EXECUTE
+
+# Launcher script: templated with @CMAKE_INSTALL_LIBDIR@ so that it points at
+# the same libdir the binary was installed into (lib on Debian/Ubuntu,
+# lib64 on RHEL/EL). @ONLY leaves ${BASH_SOURCE[0]}, $@, etc. untouched.
+configure_file(
+  ${PROJECT_SOURCE_DIR}/scripts/unix/c_dpe.in
+  ${CMAKE_CURRENT_BINARY_DIR}/c_dpe
+  @ONLY
+)
+install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/c_dpe
   DESTINATION ${CMAKE_INSTALL_BINDIR}
   COMPONENT Ersap_Runtime
 )

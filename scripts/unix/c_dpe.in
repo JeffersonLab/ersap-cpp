@@ -18,8 +18,9 @@ else
     plugins_dir="${ERSAP_HOME}/plugins"
 fi
 
-# set library path
-lib_path="$ERSAP_HOME/lib"
+# set library path (@CMAKE_INSTALL_LIBDIR@ is substituted at install time:
+# "lib" on Debian / Ubuntu, "lib64" on RHEL / EL / most 64-bit distros)
+lib_path="$ERSAP_HOME/@CMAKE_INSTALL_LIBDIR@"
 for plugin in "${plugins_dir}"/*/; do
     plugin=${plugin%*/}
     lib_path+=":${plugin}/services:${plugin}/lib"
@@ -37,4 +38,4 @@ case "$(uname)" in
         ;;
 esac
 
-exec "${ERSAP_HOME}"/lib/ersap/c_dpe "$@"
+exec "${ERSAP_HOME}/@CMAKE_INSTALL_LIBDIR@/ersap/c_dpe" "$@"

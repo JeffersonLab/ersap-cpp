@@ -53,6 +53,14 @@ if(APPLE)
     ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}
   )
   set(CMAKE_INSTALL_RPATH @loader_path @loader_path/${relDir})
+elseif(UNIX)
+  # Carry each installed shared object's own libdir plus the directories of
+  # the transitive link dependencies (protobuf, abseil, Boost, ...) in the
+  # RUNPATH, so libxmsg / libersap resolve them without LD_LIBRARY_PATH or an
+  # /etc/ld.so.conf.d edit. $ORIGIN resolves relative to the .so's own path at
+  # load time; USE_LINK_PATH appends every directory CMake saw at link time.
+  set(CMAKE_INSTALL_RPATH "$ORIGIN")
+  set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 endif()
 
 
